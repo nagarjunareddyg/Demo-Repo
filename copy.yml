@@ -1,0 +1,23 @@
+---
+- hosts: nginx
+  become: yes
+  become_method: sudo
+  vars:
+    remote_file: /var/lib/jenkins/workspace/Jenkins/index.html
+    remote_dest: /usr/local/nginx/html
+    
+  tasks:
+  - name: stop service httpd , sql
+    service:
+     name: nginx
+     state: stopped
+  - name: copy the nginx config file and restart nginx
+    copy:
+       src: "{{remote_file}}"
+       dest: "{{remote_dest}}"
+    become: yes
+    remote_src: yes 
+  - name: Start service httpd, if not started
+    service:
+     name: nginx
+     state: started
