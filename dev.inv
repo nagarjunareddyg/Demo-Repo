@@ -1,2 +1,2 @@
 [nginx]
-172.31.20.246 ansible_user=ec2-user
+172-31-12-42 ansible_user=ansadmin
