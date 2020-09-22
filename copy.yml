@@ -3,21 +3,16 @@
   become: yes
   become_method: sudo
   vars:
-    remote_file: /var/lib/jenkins/workspace/Jenkins/index.html
-    remote_dest: /usr/local/nginx/html
-    
+    remote_tmpfile: /var/lib/jenkins/workspace/Jenkins/index.html
+    remote_tmpapps: /var/www/html/
   tasks:
-  - name: stop service httpd , sql
+  - name: stop service httpd 
     service:
-     name: nginx
+     name: httpd
      state: stopped
-  - name: copy the nginx config file and restart nginx
-    copy:
-       src: "{{remote_file}}"
-       dest: "{{remote_dest}}"
-    become: yes
-    remote_src: yes 
+  - name: copy the file 
+    synchronize: src={{remote_tmpfile}}  dest={{remote_tmpapps}}
   - name: Start service httpd, if not started
     service:
-     name: nginx
+     name: httpd
      state: started
